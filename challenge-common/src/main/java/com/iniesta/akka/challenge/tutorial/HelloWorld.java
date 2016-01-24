@@ -7,16 +7,16 @@ import akka.actor.Props;
 import akka.actor.UntypedActor;
 
 public class HelloWorld extends UntypedActor {
-
+	
 	@Override
 	public void preStart() {
 		final ActorRef greeter = getContext().actorOf(Props.create(Greeter.class));
-		greeter.tell(Msg.GREET, getSelf());
+		greeter.tell(new Msg("Pete"), getSelf());
 	}
 
 	@Override
 	public void onReceive(Object msg) throws Exception {
-		if (msg == Msg.DONE) {
+		if (msg instanceof Msg && ((Msg)msg).isDone()) {
 			getContext().stop(getSelf());
 		}else {
 			unhandled(msg);
